@@ -1,0 +1,174 @@
+<html>
+  <head>
+    <!-- CSS Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" />
+
+    <title>Homework 3 JavaScript</title>
+  </head>
+  <body>
+    <div class="container">
+    <br>
+      <h5 class="text-center">
+        <!-- Menampilkan Jam (Aktif) -->
+        <div id="clock"></div>
+        <!-- ahir menampilkan Jam -->
+      </h5>
+
+      <!-- Menampilkan Hari, tanggal bulan tahun -->
+      <div id="hari" class="text-center"></div>
+      <!-- Akhir Menampilkan Hari, tanggal bulan tahun -->
+
+      <!-- awal Suhu -->
+      <h1 class="text-center mb-4">Temperature Convertion</h1>
+      <div class="card shadow">
+        <div class="card-header">
+          <h5>Input nilai yang akan dikonversi</h5>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <div class="h4 mb-12 text-center">
+              <select name="from" id="from" onchange="select()">
+                <option value="cel">Celcius</option>
+                <option value="far">Farenheit</option>
+                <option value="rea">Reamur</option>
+              </select>
+              to
+              <select name="to" id="to" onchange="select()">
+                <option value="cel">Celcius</option>
+                <option value="far">Farenheit</option>
+                <option value="rea">Reamur</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="satuan_ke">Masukan suhu</label>
+            <input type="number" name="kmh" id="num1" class="form-control mb-4" placeholder="some number" onkeypress="validate(event)" onkeyup="conv()" />
+          </div>
+          <div class="form-group">
+            <label for="hasil">Hasil</label>
+            <input type="number" id="result" class="form-control mb-4" placeholder="Hasil Konfrensi" disabled />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- akhir Suhu -->
+
+    <!-- perubahan background -->
+    <div class="container">
+      <br /> <br />
+      <div class="card shadow">
+        <div class="card-header">
+          <h5>Merubah Background</h5>
+        </div>
+        <div class="card-body">
+          <div class="form-group"></div>
+          <div class="form-group">
+            <label for="">Pilih Warna</label>
+            <input type="color" class="form-control mb-4" id="colorInputColor" />
+            <label for="">Hex warna</label>
+            <input type="text" class="form-control mb-2" id="colorInputText" disabled />
+          </div>
+        </div>
+        <div class="card-footer">
+            <input type="button" id="colorButton" value="Ubah warna background" onclick="changeColor()" />
+        </div>
+        </div>
+      </div>
+    </div>
+    <!--akhir perubahan background -->
+
+  </body>
+
+  <!-- awal script Jam -->
+  <script type="text/javascript">
+    function showTime() {
+      var a_p = "";
+      var today = new Date();
+      var curr_hour = today.getHours();
+      var curr_minute = today.getMinutes();
+      var curr_second = today.getSeconds();
+      if (curr_hour < 12) {
+        a_p = "AM";
+      } else {
+        a_p = "PM";
+      }
+      if (curr_hour == 0) {
+        curr_hour = 12;
+      }
+      if (curr_hour > 12) {
+        curr_hour = curr_hour - 12;
+      }
+      curr_hour = checkTime(curr_hour);
+      curr_minute = checkTime(curr_minute);
+      curr_second = checkTime(curr_second);
+      document.getElementById("clock").innerHTML = curr_hour + ":" + curr_minute + ":" + curr_second + " " + a_p;
+    }
+
+    function checkTime(i) {
+      if (i < 10) {
+        i = "0" + i;
+      }
+      return i;
+    }
+    setInterval(showTime, 500);
+  </script>
+  <!-- akhir script jam -->
+
+  <!-- awal script Menampilkan Hari, Bulan dan Tahun -->
+  <script type="text/javascript">
+    var months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    var myDays = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum&#39;at", "Sabtu"];
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth();
+    var thisDay = date.getDay(),
+      thisDay = myDays[thisDay];
+    var yy = date.getYear();
+    var year = yy < 1000 ? yy + 1900 : yy;
+    document.getElementById("hari").innerHTML = thisDay + ", " + day + " " + months[month] + " " + year;
+  </script>
+  <!-- akhir script Menampilkan Hari, Bulan dan Tahun -->
+
+  <!-- awal script color -->
+  <script>
+    function changeColor() {
+      let color = document.getElementById("colorInputColor").value;
+      document.body.style.backgroundColor = color;
+      document.getElementById("colorInputText").value = color;
+    }
+  </script>
+  <!-- akhir script color -->
+
+  <!-- pemanggilan file Js -->
+  <script src="./Convert.js"></script>
+  <!-- pemanggilan file Js -->
+
+  <!-- awal script suhu -->
+  <script type="text/javascript">
+    function select() {
+      document.getElementById("num1").value = "";
+      document.getElementById("result").value = "";
+    }
+
+    const convert = new Convert();
+    function conv() {
+      if (document.getElementById("from").value == "cel") {
+        const res = convert.fromCelcius(document.getElementById("to").value, parseInt(document.getElementById("num1").value));
+        document.getElementById("result").value = res;
+      }
+      if (document.getElementById("from").value == "rea") {
+        const res = convert.fromReamur(document.getElementById("to").value, parseInt(document.getElementById("num1").value));
+        document.getElementById("result").value = res;
+      }
+      if (document.getElementById("from").value == "far") {
+        const res = convert.fromFarenheit(document.getElementById("to").value, parseInt(document.getElementById("num1").value));
+        document.getElementById("result").value = res;
+      }
+    }
+  </script>
+  <!-- akhir script suhu -->
+
+  <!-- Seprate Bootstarap -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+</html>
